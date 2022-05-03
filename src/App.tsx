@@ -1,6 +1,7 @@
 import React, { FC, ChangeEvent, useState } from "react";
 import { TokenFlags } from "typescript";
 import "./App.css";
+import TodoList from "./Components/TodoList";
 
 import { ITask } from "./Interfaces";
 
@@ -13,13 +14,15 @@ const App: FC = () => {
     if (event.target.name === "task") {
       setTask(event.target.value);
     } else {
-      setDeadline ( Number(event.target.value));
+      setDeadline(Number(event.target.value));
     }
   };
 
   const addTask = (): void => {  
     const newTask = {taskName:task, deadline:deadline};
-    setTodoList([...todoList, newTask])
+    setTodoList([...todoList, newTask]);
+    setTask("");
+    setDeadline(0);
   }
 
   return (
@@ -39,9 +42,14 @@ const App: FC = () => {
             onChange={handleChange}
           />
         </div>
-        <button>Add Task</button>
+        <button onClick={addTask}>Add Task</button>
       </div>
       <div className="todoList"></div>
+      {
+        todoList.map((task:ITask, key:number) => { 
+            return <TodoList key={key} task={task}/>
+        })
+      }
     </div>
   );
 };
